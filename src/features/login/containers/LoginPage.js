@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-
-export class LoginPage extends Component {
+import { connect } from "react-redux";
+import { loginAction } from "../actions";
+class LoginPageContainer extends Component {
   state = {
     formShowed: 0
   };
@@ -65,7 +66,7 @@ export class LoginPage extends Component {
           .replace(/=/g, '":"') +
         '"}'
     );
-    console.log(parsedFormData);
+    this.props.loginAction(parsedFormData);
   };
   render() {
     const { formShowed } = this.state;
@@ -117,3 +118,17 @@ export class LoginPage extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+      main: state.appReducer,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+      loginAction: data => dispatch(loginAction(data))
+  };
+};
+export const LoginPage = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginPageContainer);
